@@ -1,0 +1,4 @@
+class FoodTruckController < ApplicationController
+  def details
+  end
+end

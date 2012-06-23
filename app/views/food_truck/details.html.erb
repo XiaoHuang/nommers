@@ -1,0 +1,6 @@
+<% @food_trucks.each_with_index do |food_truck, index| %>
+  ['<%= escape_javascript food_truck.name %>', <%= food_truck.latitude %>, <%= food_truck.longitude %>, <%= index+1 %>]
+  <% if ((index+1) < @food_trucks.length) %>
+      ,
+  <% end %> 
+<% end %>
