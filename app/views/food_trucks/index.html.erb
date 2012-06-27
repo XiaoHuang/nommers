@@ -1,8 +1,8 @@
 <input type='search' placeholder='where?' /> or <a href="?here">use my current location</a>
-<ul>
-<% @food_trucks.each_with_index do |food_truck, index| %>
-  <li><%= food_truck.name %></li>
-<% end %>
-</ul>
 
-<%= build_query_string @food_trucks %>
+<br /><br /> 
+
+
+<% @food_trucks.sort_by! {|f| f[:distance]}.each do |food_truck| %>
+  <li><%= food_truck[:name] %> - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
+<% end %>
