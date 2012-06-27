@@ -2,10 +2,11 @@
 	<link href="http://google-developers.appspot.com/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <script type="text/javascript">
+
 		function initialize() 
 		{
-		    var myLatlng = new google.maps.LatLng(34.0522,-118.2428);
-
+		  var myLatlng = new google.maps.LatLng(34.0522,-118.2428);
+						
 			var mapStyle = [
 			  {
 			    featureType: "landscape",
@@ -56,28 +57,59 @@
 			    ]
 			  },{
 			  }
-			]
+			];
 	
 			var mapStyleType = new google.maps.StyledMapType(mapStyle, {name: "Old School"})
 
-		    var myOptions = {
-		      zoom: 10,
-		      center: myLatlng,
-		      mapTypeControlOptions: {
-				mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'old_school']
-			  }
-		    };
+		  var myOptions = {
+		    zoom: 10,
+		    center: myLatlng,
+		    mapTypeControlOptions: {
+					mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'old_school']
+		 		}
+		  };
   
-		    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		    setMarkers(map, foodtrucks);
-
+    	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		  setMarkers(map, foodtrucks);
 			map.mapTypes.set('old_school', mapStyleType);
 			map.setMapTypeId('old_school')
+	    infowindow = new google.maps.InfoWindow({
+	      content: "placeholder"
+	    });
+	
+			var mycoords;
+			if (navigator.geolocation)
+			{
+				navigator.geolocation.getCurrentPosition(function(position)
+				{
+	      	var latitude = position.coords.latitude;
+	        var longitude = position.coords.longitude;
+	        mycoords = new google.maps.LatLng(latitude, longitude);
+					console.log(mycoords);
 
-		    infowindow = new google.maps.InfoWindow({
-		      content: "placeholder"
-		    });
-		  }
+					var customimg = new google.maps.MarkerImage('/assets/marker_sprite.png', new google.maps.Size(21, 34), new google.maps.Point(0, 0));
+					var customshadow = new google.maps.MarkerImage('/assets/marker_sprite.png', new google.maps.Size(28, 34), new google.maps.Point(28, 0), new google.maps.Point(0, 34));
+					
+					var m = new google.maps.Marker({
+		        position: mycoords,
+		        map: map,
+		        title: "ME!",
+		        zIndex: 9999,
+						icon: customimg,
+						shadow: customshadow
+		      });
+		
+					google.maps.event.addListener(m, 'click', function() {
+		        infowindow.setContent(this.title);
+		        infowindow.open(map, this);
+		      });
+					
+				});
+			} else {
+        console.log("Geolocation API is not supported in your browser.");
+			}
+	
+	  }
 
 		  var foodtrucks = [
 				<% @food_trucks.each_with_index do |food_truck, index| %>
@@ -88,7 +120,6 @@
 				<% end %>
 		  ];
 
-		  //geolocation code
 		  var infowindow = null;
 		  function setMarkers(map, locations)
 		  {
@@ -100,7 +131,7 @@
 		        position: myLatLng,
 		        map: map,
 		        title: truck[0],
-		        zIndex: truck[3]
+		        zIndex: truck[3],
 		      });
       
 		      google.maps.event.addListener(marker, 'click', function() {
