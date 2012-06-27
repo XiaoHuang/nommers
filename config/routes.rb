@@ -1,5 +1,9 @@
 Test1::Application.routes.draw do
-  get "food_truck/details"
+
+  resources :food_trucks, only: :index do
+    get :map, on: :collection
+  end
+  root to: 'food_trucks#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -51,7 +55,7 @@ Test1::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
-    root to: 'food_truck#details', as: 'home'
+
 
   # See how all your routes lay out with "rake routes"
 

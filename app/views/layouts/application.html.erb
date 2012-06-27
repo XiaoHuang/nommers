@@ -1,121 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Nearest Food Trucks</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-  <link href="http://google-developers.appspot.com/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-  <script type="text/javascript">
-
-  function initialize() 
-  {
-    var myLatlng = new google.maps.LatLng(34.0522,-118.2428);
-
-	var mapStyle = [
-	  {
-	    featureType: "landscape",
-	    stylers: [
-	      { saturation: 65 },
-	      { hue: "#ffe500" },
-	      { lightness: 33 }
-	    ]
-	  },{
-	    featureType: "landscape",
-	    stylers: [
-	      { hue: "#ccff00" }
-	    ]
-	  },{
-	    featureType: "poi.park",
-	    stylers: [
-	      { hue: "#ffdd00" }
-	    ]
-	  },{
-	    featureType: "road",
-	    stylers: [
-	      { saturation: -65 },
-	      { hue: "#ffc300" },
-	      { lightness: 5 }
-	    ]
-	  },{
-	    featureType: "water",
-	    stylers: [
-	      { gamma: 1.02 },
-	      { saturation: 31 },
-	      { lightness: 2 },
-	      { hue: "#ffa200" }
-	    ]
-	  },{
-	  },{
-	    featureType: "poi.business",
-	    stylers: [
-	      { hue: "#ff9900" },
-	      { saturation: 44 }
-	    ]
-	  },{
-	  },{
-	    featureType: "water",
-	    stylers: [
-	      { lightness: 45 },
-	      { saturation: -60 },
-	      { hue: "#1aff00" }
-	    ]
-	  },{
-	  }
-	]
-	
-	var mapStyleType = new google.maps.StyledMapType(mapStyle, {name: "Old School"})
-
-    var myOptions = {
-      zoom: 10,
-      center: myLatlng,
-      mapTypeControlOptions: {
-		mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'old_school']
-	  }
-    };
-  
-    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    setMarkers(map, foodtrucks);
-
-	map.mapTypes.set('old_school', mapStyleType);
-	map.setMapTypeId('old_school')
-
-    infowindow = new google.maps.InfoWindow({
-      content: "placeholder"
-    });
-  }
-
-  var foodtrucks = [
-  <%= yield %>
-  ];
-
-  //geolocation code
-  var infowindow = null;
-  function setMarkers(map, locations)
-  {
-    for (var i = 0; i < locations.length; i++)
-    {
-      var truck = locations[i];
-      var myLatLng = new google.maps.LatLng(truck[1], truck[2]);
-      var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-        title: truck[0],
-        zIndex: truck[3]
-      });
-      
-      google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(this.title);
-        infowindow.open(map, this);
-      });
-    }
-  }
-  </script>
-</head>
-
-<body onload="initialize()">
-    <div id="map_canvas"></div>
-</body>
-
+	  <title>Nearest Food Trucks</title>
+	  <%= stylesheet_link_tag    "application", :media => "all" %>
+	  <%= javascript_include_tag "application" %>
+	  <%= csrf_meta_tags %>
+		<%= content_for :head %>
+	</head>
+	<body>
+		<%= yield %>
+	</body>
 </html>
