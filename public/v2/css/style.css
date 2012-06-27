@@ -1,0 +1,175 @@
+
+
+----------------------------------------
+Min-Width: 320px /\/\/\/\/\/\/\/\/\/\/\/\/\/\
+--------------------------------------------*/
+
+@media only screen and (min-width: 320px) {
+    h1 {  
+        font-family: 'Impact', Sans-serif; 
+        font-size: 4em;
+        line-height: 1.5em;
+        margin: 0px 0px;
+    }
+    h2  {  
+        font-family: 'Impact', Sans-serif; 
+        font-size: 2em;
+        line-height: 1.5em;
+        margin: 0px 0px;
+    }
+
+}  
+
+/*--------------------------------------------
+Min-Width: 1280px /\/\/\/\/\/\/\/\/\/\/\/\/\/\
+--------------------------------------------*/
+
+@media only screen and (min-width: 1280px) {
+    h1 {  
+        font-family: 'Impact', Sans-serif; 
+        font-size: 5em;
+        line-height: 1em;
+        margin: 0px 0px;
+    }
+    h2 {  
+        font-family: 'Impact', Sans-serif; 
+        font-size: 2.5em;
+        line-height: 1em;
+        margin: 0px 0px;
+    }
+}  
+
+/*--------------------------------------------
+Min-Width: 1300px /\/\/\/\/\/\/\/\/\/\/\/\/\/\
+--------------------------------------------*/
+
+@media only screen and (min-width: 1300px) {
+    h1 {  
+        font-family: 'Impact', serif; 
+        font-size: 5em;
+        line-height: 1.5em;
+        margin: 0px 0px;
+    } 
+    h2 {  
+        font-family: 'Impact', serif; 
+        font-size: 2.5em;
+	line-height: 1.5em;
+        margin: 0px 0px;
+    }
+}  
+
+
+/*--------------------------------------------
+Defaults
+--------------------------------------------*/
+
+
+* {
+    outline: none;
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    font-size: 10px;
+    line-height: 10px;
+    font-family: Helvetica;
+}
+
+form {
+    position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+
+input[type="text"] {
+    border-width: 0px 0px 3px 0px;
+    border-style: solid;
+    border-color: transparent transparent #efefef transparent;
+    width: 250px;
+    position: relative;
+    top: 0px;
+    padding: 7px 10px 2px;
+    font-family: 'Impact', serif; 
+    font-size: 0.9em;
+    background: transparent;
+    color: #c0c0c0;
+}
+
+input.focus {
+    color: #1f73ff;
+    background: #fff;
+    border-bottom-color: #1f73ff;
+    -webkit-transition: all 100ms ease-in-out;
+    -moz-transition: all 100ms ease-in-out;
+    -ms-transition: all 100ms ease-in-out;
+    -o-transition: all 100ms ease-in-out;
+    transition: all 100ms ease-in-out;
+}
+
+/*Classes*/
+
+.logout input[name*="myusername"] {
+    margin-bottom: 15px;
+}
+
+input[name*="Submit"] {
+    background: url("arrow.png") no-repeat scroll center 10px transparent;
+    border-radius: 45px 45px 45px 45px;
+    border-width: 0;
+    bottom: -50px;
+    color: transparent;
+    display: block;
+    font-family: Helvetica;
+    font-size: 1.5em;
+    font-weight: bold;
+    height: 120px;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    width: 85px;
+    -moz-transform: scale(0.5) rotate(0deg);
+    -webkit-transform: scale(0.5) rotate(0deg);
+    -o-transform: scale(0.5) rotate(0deg);
+    -ms-transform: scale(0.5) rotate(0deg);
+    transform: scale(0.5) rotate(0deg);
+    -webkit-transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    -ms-transition: all 200ms ease-in-out;
+    -o-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+}
+
+input[name*="Submit"]:hover {
+    background-color: transparent;
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+    -webkit-transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    -ms-transition: all 200ms ease-in-out;
+    -o-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+}
+
+input[name*="Submit"]:active {
+    background-color: transparent;
+    -webkit-transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    -ms-transition: all 200ms ease-in-out;
+    -o-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+}
+
+
+
+
+div
+{ 
+position:absolute; top:35%; left:31%;
+} 
