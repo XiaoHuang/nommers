@@ -153,6 +153,9 @@ $(function() {
 <div id="left">
 	<form id="loc_form" method="get" action="/">
 		<input id='location' type='search' placeholder='where?' value="<%= params[:location] %>" name='location'/> or <a href="#" id="my_location">use my current location</a>
+		<% if current_user && current_user[:last_location] %>
+			or <a href="">use my last location(<%= current_user[:last_location] %>)</a>
+		<% end %>
 		<input type="submit" value="Search">
 	</form>
 
