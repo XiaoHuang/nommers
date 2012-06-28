@@ -17,7 +17,8 @@ $(function() {
 			});
 		}
 	});
-
+	
+	<% unless @food_trucks.nil? %>
 	function initialize() 
 	{
 		var mycoords = new google.maps.LatLng(<%= @my_long %>, <%= @my_lat %>);
@@ -81,7 +82,11 @@ $(function() {
 	    center: mycoords,
 	    mapTypeControlOptions: {
 				mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'old_school']
-	 		}
+	 		},
+			streetViewControl: false,
+			zoomControl: false,
+			panControl: false,
+			mapTypeControl: false
 	  };
 	
 		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
@@ -104,7 +109,7 @@ $(function() {
 			shadow: customshadow
     });
 	}
-	
+		
 	var foodtrucks = [
 		<% @food_trucks.each_with_index do |food_truck, index| %>
 		  ['<%= escape_javascript food_truck[:name] %>', <%= food_truck[:latitude] %>, <%= food_truck[:longitude] %>, <%= index+1 %>]
@@ -113,7 +118,6 @@ $(function() {
 		  <% end %>  
 		<% end %>
   ];
-
 	
   var infowindow = null;
   function setMarkers(map, locations)
@@ -137,6 +141,8 @@ $(function() {
   }
 	
 	$(initialize);
+	<% end %>
+	
 	
 });
 
@@ -145,12 +151,12 @@ $(function() {
 
 <div id="left">
 	<form id="loc_form" method="get" action="/">
-		<input id='location' type='search' placeholder='where?' name='location'/> or <a href="#" id="my_location">use my current location</a>
+		<input id='location' type='search' placeholder='where?' value="<%= params[:location] %>" name='location'/> or <a href="#" id="my_location">use my current location</a>
 		<input type="submit" value="Search">
 	</form>
 
 	<% unless @food_trucks.nil? %>
-		<h3>Nearby Food Trucks</h3>
+		<h3>Food Trucks Within 5 Miles</h3>
 		<ul>
 		<% @food_trucks.sort_by! {|f| f[:distance]}.each do |food_truck| %>
   		<li><%= food_truck[:name] %> - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
@@ -160,5 +166,5 @@ $(function() {
 </div>
 
 <% unless @food_trucks.nil? %>
-<div id="map_canvas" style="width:700px; height: 600px;"></div>
+<div id="map_canvas"></div>
 <% end %>
