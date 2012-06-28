@@ -13,5 +13,5 @@
     json = ActiveSupport::JSON.decode(file.read)
 
     json['markers'].each do |x|
-       FoodTruck.create(name: x['print_name'], latitude: x['coord_lat'], longitude: x['coord_long'])
+       FoodTruck.create(name: x['print_name'], latitude: x['coord_lat'], longitude: x['coord_long'], handle: x['truck'])
     end
