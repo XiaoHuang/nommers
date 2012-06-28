@@ -38,7 +38,7 @@ class FoodTruck < ActiveRecord::Base
     food_trucks.each_with_index do |food_truck, index|
       dist = here.distance_to Geokit::LatLng.new(food_truck.latitude, food_truck.longitude)
       if dist < distance_threshold
-        nearby << { distance: dist, name: food_truck[:name] }
+        nearby << { distance: dist, name: food_truck[:name], latitude: food_truck.latitude, longitude: food_truck.longitude }
       end
     end
     

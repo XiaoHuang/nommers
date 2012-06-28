@@ -13,22 +13,152 @@ $(function() {
 		  	var lat = position.coords.latitude;
 		    var lng = position.coords.longitude;
 				$('#location').val(lat + ',' + lng);
+				$("#loc_form").submit();
 			});
 		}
-	}); 
+	});
+
+	function initialize() 
+	{
+		var mycoords = new google.maps.LatLng(<%= @my_long %>, <%= @my_lat %>);
+				
+		var mapStyle = [
+	  	{
+	 	   featureType: "landscape",
+		    stylers: [
+		      { saturation: 65 },
+		      { hue: "#ffe500" },
+		      { lightness: 33 }
+		    ]
+		  },{
+		    featureType: "landscape",
+		    stylers: [
+		      { hue: "#ccff00" }
+		    ]
+		  },{
+		    featureType: "poi.park",
+		    stylers: [
+		      { hue: "#ffdd00" }
+		    ]
+		  },{
+		    featureType: "road",
+		    stylers: [
+		      { saturation: -65 },
+		      { hue: "#ffc300" },
+		      { lightness: 5 }
+		    ]
+		  },{
+		    featureType: "water",
+		    stylers: [
+		      { gamma: 1.02 },
+		      { saturation: 31 },
+		      { lightness: 2 },
+		      { hue: "#ffa200" }
+		    ]
+		  },{
+		  },{
+		    featureType: "poi.business",
+		    stylers: [
+		      { hue: "#ff9900" },
+		      { saturation: 44 }
+		    ]
+		  },{
+		  },{
+		    featureType: "water",
+		    stylers: [
+		      { lightness: 45 },
+		      { saturation: -60 },
+		      { hue: "#1aff00" }
+		    ]
+		  },{
+		  }
+		];
+
+		var mapStyleType = new google.maps.StyledMapType(mapStyle, {name: "Old School"})
+
+	  var myOptions = {
+	    zoom: 12,
+	    center: mycoords,
+	    mapTypeControlOptions: {
+				mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'old_school']
+	 		}
+	  };
+	
+		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	  setMarkers(map, foodtrucks);
+		map.mapTypes.set('old_school', mapStyleType);
+		map.setMapTypeId('old_school')
+	  infowindow = new google.maps.InfoWindow({
+	    content: "placeholder"
+	  });
+	
+		var customimg = new google.maps.MarkerImage('/assets/marker_sprite.png', new google.maps.Size(21, 34), new google.maps.Point(0, 0));
+		var customshadow = new google.maps.MarkerImage('/assets/marker_sprite.png', new google.maps.Size(28, 34), new google.maps.Point(28, 0), new google.maps.Point(0, 34));
+		
+		var m = new google.maps.Marker({
+      position: mycoords,
+      map: map,
+      title: "ME!",
+      zIndex: 9999,
+			icon: customimg,
+			shadow: customshadow
+    });
+	}
+	
+	var foodtrucks = [
+		<% @food_trucks.each_with_index do |food_truck, index| %>
+		  ['<%= escape_javascript food_truck[:name] %>', <%= food_truck[:latitude] %>, <%= food_truck[:longitude] %>, <%= index+1 %>]
+		  <% if ((index+1) < @food_trucks.length) %>
+		      ,
+		  <% end %>  
+		<% end %>
+  ];
+
+	
+  var infowindow = null;
+  function setMarkers(map, locations)
+  {
+    for (var i = 0; i < locations.length; i++)
+    {
+      var truck = locations[i];
+      var myLatLng = new google.maps.LatLng(truck[1], truck[2]);
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: truck[0],
+        zIndex: truck[3],
+      });
+  
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(this.title);
+        infowindow.open(map, this);
+      });
+    }
+  }
+	
+	$(initialize);
+	
 });
 
 </script>
 <% end %>
 
-<form method="get" action="/">
-	<input id='location' type='search' placeholder='where?' name='location'/> or <a href="#" id="my_location">use my current location</a>
-	<input type="submit" value="Search">
-</form>
+<div id="left">
+	<form id="loc_form" method="get" action="/">
+		<input id='location' type='search' placeholder='where?' name='location'/> or <a href="#" id="my_location">use my current location</a>
+		<input type="submit" value="Search">
+	</form>
 
-<br /><br /> 
+	<% unless @food_trucks.nil? %>
+		<h3>Nearby Food Trucks</h3>
+		<ul>
+		<% @food_trucks.sort_by! {|f| f[:distance]}.each do |food_truck| %>
+  		<li><%= food_truck[:name] %> - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
+	<% end %>
+		</ul>
+	<% end %>
+</div>
 
-
-<% @food_trucks.sort_by! {|f| f[:distance]}.each do |food_truck| %>
-  <li><%= food_truck[:name] %> - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
+<% unless @food_trucks.nil? %>
+<div id="map_canvas" style="width:700px; height: 600px;"></div>
 <% end %>
