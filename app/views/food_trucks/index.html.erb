@@ -1,4 +1,30 @@
-<input type='search' placeholder='where?' /> or <a href="?here">use my current location</a>
+<% content_for :head do %>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjpc3N49wLGD0LtRTkwIjxrRBDx1hAaco&sensor=false"></script>
+
+<script type="text/javascript">
+
+$(function() {
+	$('#my_location').click(function() {
+		var mycoords;
+		if (navigator.geolocation)
+		{
+			navigator.geolocation.getCurrentPosition(function(position)
+			{
+		  	var lat = position.coords.latitude;
+		    var lng = position.coords.longitude;
+				$('#location').val(lat + ',' + lng);
+			});
+		}
+	}); 
+});
+
+</script>
+<% end %>
+
+<form method="get" action="/">
+	<input id='location' type='search' placeholder='where?' name='location'/> or <a href="#" id="my_location">use my current location</a>
+	<input type="submit" value="Search">
+</form>
 
 <br /><br /> 
 

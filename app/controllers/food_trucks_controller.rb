@@ -3,6 +3,9 @@ class FoodTrucksController < ApplicationController
     @food_trucks = FoodTruck.order(:name)
   end
   def index
-    @food_trucks = FoodTruck.near("34.0634625", "-118.3680602", 5)
+    Geokit::Geocoders::google = "AIzaSyDjpc3N49wLGD0LtRTkwIjxrRBDx1hAaco"
+    loc = GeoKit::Geocoders::GoogleGeocoder.geocode params[:location]
+    loc = loc.ll.split(',')
+    @food_trucks = FoodTruck.near(loc[0], loc[1], 5)
   end
 end
