@@ -3,6 +3,8 @@
 
 <script type="text/javascript">
 
+var map;
+
 $(function() {
 	$('#my_location').click(function() {
 		var mycoords;
@@ -19,6 +21,7 @@ $(function() {
 	});
 	
 	<% unless @food_trucks.nil? %>
+	
 	function initialize() 
 	{
 		var mycoords = new google.maps.LatLng(<%= @my_long %>, <%= @my_lat %>);
@@ -39,7 +42,7 @@ $(function() {
 		  },{
 		    featureType: "poi.park",
 		    stylers: [
-		      { hue: "#ffdd00" }
+		      { hue: "#ccff00" }
 		    ]
 		  },{
 		    featureType: "road",
@@ -90,7 +93,7 @@ $(function() {
 			backgroundColor: "#fbfdf1"
 	  };
 	
-		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 	  setMarkers(map, foodtrucks);
 		map.mapTypes.set('old_school', mapStyleType);
 		map.setMapTypeId('old_school')
@@ -139,13 +142,18 @@ $(function() {
         infowindow.open(map, this);
       });
     }
-  }
+	}
 	
 	$(initialize);
 	<% end %>
-	
-	
 });
+
+function recentermap(lng, lat)
+{
+	console.log("here");
+	map.panTo(new google.maps.LatLng(lat, lng));
+}
+
 
 </script>
 <% end %>
@@ -163,7 +171,7 @@ $(function() {
 		<h3>Food Trucks Within 5 Miles</h3>
 		<ul>
 		<% @food_trucks.sort_by! {|f| f[:distance]}.each do |food_truck| %>
-  		<li><%= food_truck[:name] %> - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
+  		<li onmouseover="recentermap(<%= food_truck[:longitude] %>,<%= food_truck[:latitude] %>)"><%= food_truck[:name] %> (<a href="http://twitter.com/<%= food_truck[:handle] %>">@<%= food_truck[:handle] %></a>) - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
 	<% end %>
 		</ul>
 	<% end %>
