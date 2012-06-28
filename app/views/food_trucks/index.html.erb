@@ -159,7 +159,7 @@ function recentermap(lng, lat, name)
 	map.panTo(point);
 	
 	infowindow.setPosition(point);
-	infowindow.setContent(name);
+	infowindow.setContent(unescape(name));
 	infowindow.open(map);
 }
 
@@ -169,6 +169,10 @@ $(function() {
 		map.setCenter(mycoords);
 		infowindow.close();
 	});
+	$('#nearby_foodtrucks li').mouseenter(function() {
+		var l = $(this)
+		recentermap(l.attr("lng"), l.attr("lat"), l.attr("title"));
+	});
 });
 
 </script>
@@ -176,18 +180,20 @@ $(function() {
 
 <div id="left">
 	<form id="loc_form" method="get" action="/">
-		<input id='location' type='search' placeholder='where?' value="<%= params[:location] %>" name='location'/> <input type="submit" value="Search">
-		<p><a href="#" id="my_location">Use my current location</a></p>
+		<p>use: <a href="#" id="my_location">current location</a>
 		<% if current_user && current_user[:last_location] %>
-			<p><a href="?location=<%= current_user[:last_location] %>">Use my last location (<%= current_user[:last_location] %>)</a></p>
+			| <a href="?location=<%= current_user[:last_location] %>">last location (<%= current_user[:last_location] %>)</a>
 		<% end %>
+		</p>
+		<input id='location' type='ssearch' placeholder='where?' value="<%= params[:location] %>" name='location'/> <input type="submit" value="Search">
 	</form>
 
 	<% unless @food_trucks.nil? %>
 		<h3>Food Trucks Within 5 Miles</h3>
 		<ul id="nearby_foodtrucks">
 		<% @food_trucks.sort_by! {|f| f[:distance]}.each do |food_truck| %>
-  		<li onmouseover="recentermap(<%= food_truck[:longitude] %>,<%= food_truck[:latitude] %>,'<%= escape_javascript food_truck[:name] %>')"><%= food_truck[:name] %> (<a href="http://twitter.com/<%= food_truck[:handle] %>">@<%= food_truck[:handle] %></a>) - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
+  		<li lng="<%= food_truck[:longitude] %>" lat="<%= food_truck[:latitude] %>" title="<%= escape_javascript food_truck[:name] %>">
+				<a href="#favorite" class="heart"><img src="/assets/small_black_heart.png"/></a><%= food_truck[:name] %><br />(<a href="http://twitter.com/<%= food_truck[:handle] %>">@<%= food_truck[:handle] %></a>) - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
 	<% end %>
 		</ul>
 	<% end %>

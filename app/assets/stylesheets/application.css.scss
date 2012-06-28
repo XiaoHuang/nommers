@@ -19,6 +19,7 @@ html {
 body {
 	width: 960px;
 	margin: 0 auto;
+	font: 12px "Lucida Grande", "Lucida Sans Unicode";
 }
 
 #left {
@@ -28,10 +29,32 @@ body {
 	height: 100%;
 	background-color: white;
 	border: 2px solid #c4b887;
-	padding: 10px;
 	
 	a {
 		color: #85bc79;
+	}
+	
+	#loc_form {
+		padding: 10px;
+		text-align: center;
+		
+		input {
+			width: 260px;
+			font-size: 15px;
+		}
+		input[type=submit] {
+			width: 60px;
+		}
+	}
+	
+	h3 {
+		font: bold 13px "Georgia";
+		border-bottom: 1px dotted #ddd;
+		padding-bottom: 5px;
+		margin-bottom: 0;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		text-align: center;
 	}
 	
 	ul {
@@ -39,17 +62,24 @@ body {
 		margin: 0;
 		padding: 0;
 		li {
-			padding: 10px 5px;
+			padding: 10px;
 			cursor: pointer;
 			&:hover {
-				background-color: #f8f8f8;
+				background-color: #d8f0d4;
 			}
+			
 		}
 	}
 }
 
+.heart {
+	float: left;
+	width: 25px;
+	padding-top: 3px;
+	opacity: 0.2;
+}
+
 #user_info {
-	font: 12px "Lucida Grande", "Lucida Sans Unicode";
 	margin: 10px;
 	text-align: right;
 	.username {
