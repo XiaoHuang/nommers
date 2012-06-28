@@ -11,6 +11,8 @@ class FoodTrucksController < ApplicationController
       @my_lat = loc[1]
       @food_trucks = FoodTruck.near(@my_long, @my_lat, 5)
       
+      render :index
+      
       if current_user
 			  current_user[:last_location] = params[:location]
 			  current_user.save

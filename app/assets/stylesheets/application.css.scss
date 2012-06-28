@@ -44,6 +44,15 @@ body {
 	}
 }
 
+#user_info {
+	font: 12px "Lucida Grande", "Lucida Sans Unicode";
+	margin: 10px;
+	text-align: right;
+	.username {
+		font-weight: bold;
+	}
+}
+
 #map_canvas {
 	width: 600px;
 	height: 600px;
