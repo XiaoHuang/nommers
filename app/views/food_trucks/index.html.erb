@@ -152,11 +152,11 @@ $(function() {
 
 <div id="left">
 	<form id="loc_form" method="get" action="/">
-		<input id='location' type='search' placeholder='where?' value="<%= params[:location] %>" name='location'/> or <a href="#" id="my_location">use my current location</a>
+		<input id='location' type='search' placeholder='where?' Xvalue="<%= params[:location] %>" name='location'/> <input type="submit" value="Search">
+		<p><a href="#" id="my_location">Use my current location</a></p>
 		<% if current_user && current_user[:last_location] %>
-			or <a href="">use my last location(<%= current_user[:last_location] %>)</a>
+			<p><a href="">Use my last location (<%= current_user[:last_location] %>)</a></p>
 		<% end %>
-		<input type="submit" value="Search">
 	</form>
 
 	<% unless @food_trucks.nil? %>
