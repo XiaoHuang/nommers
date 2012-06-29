@@ -174,8 +174,11 @@ $(function() {
 		recentermap(l.attr("lng"), l.attr("lat"), l.attr("title"));
 	});
 	$('.heart').click(function() {
-		console.log($(this).parent().attr("handle"));
-		//jQuery.ajax("/food_trucks/favorite/" + $(this).parent().attr("handle"))
+		//console.log($(this).parent().attr("handle"));
+		jQuery.ajax($(this).attr("href"));
+		$(this).toggleClass('favorite');
+		console.log($(this).attr("href").indexOf("/favorite/"))
+		$(this).attr("href").indexOf("/favorite/") == 0? $(this).attr("href", $(this).attr("href").replace("/favorite/", "/unfavorite/")) : $(this).attr("href", $(this).attr("href").replace("/unfavorite/", "/favorite/"));
 		return false;
 	});
 });
@@ -198,7 +201,8 @@ $(function() {
 		<ul id="nearby_foodtrucks">
 		<% @food_trucks.sort_by! {|f| f[:distance]}.each do |food_truck| %>
   		<li lng="<%= food_truck[:longitude] %>" lat="<%= food_truck[:latitude] %>" title="<%= escape_javascript food_truck[:name] %>" handle="<%= food_truck[:handle] %>">
-				<a href="#favorite" class="heart"><img src="/assets/red_heart.png"/></a><%= food_truck[:name] %><br />(<a href="http://twitter.com/<%= food_truck[:handle] %>">@<%= food_truck[:handle] %></a>) - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
+			<% if current_user && current_user.favorites.include?(FoodTruck.find_by_handle(food_truck[:handle])) then heart_class = "favorite" end %>
+				<a href="/<%= heart_class == "favorite" ? "un" : "" %>favorite/<%= food_truck[:handle] %>" class="heart <%= heart_class %>"><img src="/assets/red_heart.png"/></a><%= food_truck[:name] %><br />(<a href="http://twitter.com/<%= food_truck[:handle] %>">@<%= food_truck[:handle] %></a>) - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
 	<% end %>
 		</ul>
 	<% end %>
