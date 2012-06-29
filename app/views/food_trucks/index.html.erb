@@ -7,6 +7,13 @@ var map;
 var infowindow = null;
 var mycoords;
 
+function stripslashes(str)
+{
+	str=str.replace(/\\'/g,'\'');
+	str=str.replace(/\\"/g,'"');
+	return str;
+}
+
 $(function() {
 	$('#my_location').click(function() {
 		var mycoords;
@@ -160,6 +167,7 @@ function recentermap(lng, lat, name)
 	map.panTo(point);
 	
 	infowindow.setPosition(point);
+	name = stripslashes(name);
 	infowindow.setContent(unescape(name));
 	infowindow.setOptions({pixelOffset: new google.maps.Size(0, -34)});
 	infowindow.open(map);
