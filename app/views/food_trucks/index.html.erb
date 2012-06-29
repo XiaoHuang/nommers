@@ -176,10 +176,20 @@ $(function() {
 		recentermap(l.attr("data-lng"), l.attr("data-lat"), l.attr("title"));
 	});
 	$('.heart').click(function() {
+		
+		<% if !current_user %>
+		
+		$('#createaccount').show();
+		
+		<% else  %>
 		jQuery.ajax($(this).attr("href"));
-		$(this).toggleClass('favorite');
 		console.log($(this).attr("href").indexOf("/favorite/"))
 		$(this).attr("href").indexOf("/favorite/") == 0? $(this).attr("href", $(this).attr("href").replace("/favorite/", "/unfavorite/")) : $(this).attr("href", $(this).attr("href").replace("/unfavorite/", "/favorite/"));
+		
+		<% end  %>
+		
+		$(this).toggleClass('favorite');
+		
 		return false;
 	});
 });
@@ -199,6 +209,7 @@ $(function() {
 
 	<% unless @food_trucks.nil? %>
 		<h3>Food Trucks Within 5 Miles</h3>
+		<p id="createaccount">Your favorite food trucks will not be saved. <%= link_to "Create an account", signup_path %> to start trucking!</p>
 		<ul id="nearby_foodtrucks">
 		<% @food_trucks.sort_by! {|f| f.distance}.each do |food_truck| %>
   		<li data-lng="<%= food_truck.longitude %>" data-lat="<%= food_truck.latitude %>" title="<%= escape_javascript food_truck.name %>">

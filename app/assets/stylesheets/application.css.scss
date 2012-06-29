@@ -22,6 +22,16 @@ body {
 	font: 12px "Lucida Grande", "Lucida Sans Unicode";
 }
 
+p#createaccount {
+	display: none;
+	background-color: #FFFFCC;
+	padding: 10px;
+	a {
+		font-weight: bold;
+		color: orangered;
+	}
+}
+
 #left {
 	width: 300px;
 	float: left;
