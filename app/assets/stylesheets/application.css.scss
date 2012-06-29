@@ -67,7 +67,6 @@ body {
 			&:hover {
 				background-color: #d8f0d4;
 			}
-			
 		}
 	}
 }
@@ -76,7 +75,11 @@ body {
 	float: left;
 	width: 25px;
 	padding-top: 3px;
-	opacity: 0.2;
+	opacity: 0.15;
+}
+
+.heart.favorite {
+	opacity: 1;
 }
 
 #user_info {
