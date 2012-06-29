@@ -3,3 +3,5 @@ require File.expand_path('../application', __FILE__)
 
 # Initialize the rails application
 Test1::Application.initialize!
+
+ENV['RAILS_ENV'] ||= 'development'
