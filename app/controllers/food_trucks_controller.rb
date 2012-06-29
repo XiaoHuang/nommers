@@ -22,7 +22,4 @@ class FoodTrucksController < ApplicationController
       @food_trucks = nil
     end
   end
-  def favorite
-    
-  end
 end

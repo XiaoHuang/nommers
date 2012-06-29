@@ -1,5 +1,6 @@
 class FoodTruck < ActiveRecord::Base
   attr_accessible :name, :address, :latitude, :longitude, :handle
+  has_and_belongs_to_many :fans, class_name: "User"
 
   def self.near(lat, long, distance_threshold)
 =begin

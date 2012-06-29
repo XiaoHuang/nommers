@@ -17,6 +17,9 @@
 					<%= link_to "Log In", login_path %>
 				<% end %>
 			</div>
+			<header style='text-align: center;'>
+				<img src='/assets/foodtrucks.png' />
+			</header>
 			<% flash.each do |name, msg| %>
 				<%= content_tag :div, msg, id: "flash_#{name}" %>
 			<% end %>

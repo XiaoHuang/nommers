@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120628214115) do
+ActiveRecord::Schema.define(:version => 20120629010735) do
 
   create_table "food_trucks", :force => true do |t|
     t.string   "name"
@@ -22,6 +22,13 @@ ActiveRecord::Schema.define(:version => 20120628214115) do
     t.string   "address"
     t.string   "handle"
   end
+
+  create_table "food_trucks_users", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "food_truck_id"
+  end
+
+  add_index "food_trucks_users", ["user_id", "food_truck_id"], :name => "index_food_trucks_users_on_user_id_and_food_truck_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
