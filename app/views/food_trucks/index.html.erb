@@ -119,7 +119,7 @@ $(function() {
 		
 	var foodtrucks = [
 		<% @food_trucks.each_with_index do |food_truck, index| %>
-		  ['<%= escape_javascript food_truck[:name] %>', <%= food_truck[:latitude] %>, <%= food_truck[:longitude] %>, <%= index+1 %>]
+		  ['<%= escape_javascript food_truck.name %>', <%= food_truck.latitude %>, <%= food_truck.longitude %>, <%= index+1 %>, <%= food_truck.fans.count %>]
 		  <% if ((index+1) < @food_trucks.length) %>
 		      ,
 		  <% end %>  
@@ -137,12 +137,13 @@ $(function() {
         map: map,
         title: truck[0],
         zIndex: truck[3],
+				fans: truck[4]
       });
   
       google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(this.title);
+        infowindow.setContent(this.title + " has " + this.fans + " fan(s)");
+				infowindow.setOptions({pixelOffset: new google.maps.Size(0, 0)});
         infowindow.open(map, this);
-				console.log(this);
       });
     }
 	}
@@ -155,11 +156,12 @@ function recentermap(lng, lat, name)
 {
 	var point = new google.maps.LatLng(lat, lng)
 	
-	map.setZoom(13);
+	map.setZoom(15);
 	map.panTo(point);
 	
 	infowindow.setPosition(point);
 	infowindow.setContent(unescape(name));
+	infowindow.setOptions({pixelOffset: new google.maps.Size(0, -34)});
 	infowindow.open(map);
 }
 
@@ -171,10 +173,9 @@ $(function() {
 	});
 	$('#nearby_foodtrucks li').mouseenter(function() {
 		var l = $(this)
-		recentermap(l.attr("lng"), l.attr("lat"), l.attr("title"));
+		recentermap(l.attr("data-lng"), l.attr("data-lat"), l.attr("title"));
 	});
 	$('.heart').click(function() {
-		//console.log($(this).parent().attr("handle"));
 		jQuery.ajax($(this).attr("href"));
 		$(this).toggleClass('favorite');
 		console.log($(this).attr("href").indexOf("/favorite/"))
@@ -189,8 +190,8 @@ $(function() {
 <div id="left">
 	<form id="loc_form" method="get" action="/">
 		<p>use: <a href="#" id="my_location">current location</a>
-		<% if current_user && current_user[:last_location] %>
-			| <a href="?location=<%= current_user[:last_location] %>">last location (<%= current_user[:last_location] %>)</a>
+		<% if current_user && current_user.last_location %>
+			| <a href="?location=<%= current_user.last_location %>">last location (<%= current_user.last_location %>)</a>
 		<% end %>
 		</p>
 		<input id='location' type='ssearch' placeholder='where?' value="<%= params[:location] %>" name='location'/> <input type="submit" value="Search">
@@ -199,10 +200,10 @@ $(function() {
 	<% unless @food_trucks.nil? %>
 		<h3>Food Trucks Within 5 Miles</h3>
 		<ul id="nearby_foodtrucks">
-		<% @food_trucks.sort_by! {|f| f[:distance]}.each do |food_truck| %>
-  		<li lng="<%= food_truck[:longitude] %>" lat="<%= food_truck[:latitude] %>" title="<%= escape_javascript food_truck[:name] %>" handle="<%= food_truck[:handle] %>">
-			<% if current_user && current_user.favorites.include?(FoodTruck.find_by_handle(food_truck[:handle])) then heart_class = "favorite" end %>
-				<a href="/<%= heart_class == "favorite" ? "un" : "" %>favorite/<%= food_truck[:handle] %>" class="heart <%= heart_class %>"><img src="/assets/red_heart.png"/></a><%= food_truck[:name] %><br />(<a href="http://twitter.com/<%= food_truck[:handle] %>">@<%= food_truck[:handle] %></a>) - <%= number_with_precision(food_truck[:distance], {precision: 2} ) %> miles</li>
+		<% @food_trucks.sort_by! {|f| f.distance}.each do |food_truck| %>
+  		<li data-lng="<%= food_truck.longitude %>" data-lat="<%= food_truck.latitude %>" title="<%= escape_javascript food_truck.name %>">
+			<% if current_user && current_user.favorites.include?(food_truck) then heart_class = "favorite" end %>
+				<a href="/<%= heart_class == "favorite" ? "un" : "" %>favorite/<%= food_truck.handle %>" class="heart <%= heart_class %>"><img src="/assets/red_heart.png"/></a><%= food_truck.name %><br />(<a href="http://twitter.com/<%= food_truck.handle %>">@<%= food_truck.handle %></a>) - <%= number_with_precision(food_truck.distance, {precision: 2} ) %> miles</li>
 	<% end %>
 		</ul>
 	<% end %>

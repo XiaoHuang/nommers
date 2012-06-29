@@ -1,4 +1,6 @@
 class FoodTrucksController < ApplicationController
+  after_filter :save_last_location
+  
   def map
     @food_trucks = FoodTruck.order(:name)
   end
@@ -9,17 +11,17 @@ class FoodTrucksController < ApplicationController
       loc = loc.ll.split(',')
       @my_long = loc[0]
       @my_lat = loc[1]
-      @food_trucks = FoodTruck.near(@my_long, @my_lat, 5)
-      
-      render :index
-      
-      if current_user
-			  current_user[:last_location] = params[:location]
-			  current_user.save
-			end
-			
+      @food_trucks = FoodTruck.near(@my_long, @my_lat, 5)			
     else
       @food_trucks = nil
     end
+  end
+  
+  private
+  def save_last_location
+    if current_user
+		  current_user[:last_location] = params[:location]
+		  current_user.save
+		end
   end
 end
