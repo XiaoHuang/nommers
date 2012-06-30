@@ -213,7 +213,7 @@ $(function() {
 </script>
 <% end %>
 
-<div id="left">
+<div id="left" <% if @food_trucks.nil? then %> class="full" <% end %> >
 	<form id="loc_form" method="get" action="/">
 		<p>use: <a href="#" id="my_location">current location</a>
 		<% if current_user && current_user.last_location %>
