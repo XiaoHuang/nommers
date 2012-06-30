@@ -21,12 +21,20 @@ $(function() {
 		{
 			navigator.geolocation.getCurrentPosition(function(position)
 			{
+				console.log("here");
 		  	var lat = position.coords.latitude;
 		    var lng = position.coords.longitude;
 				$('#location').val(lat + ',' + lng);
 				$("#loc_form").submit();
+			}, function(err) {
+				if (err.code == 1)
+					console.log("How are you gonna expect this to work if you deny me?")
 			});
+		} else {
+			console.log("Geolocation not supported.");
 		}
+		
+		return false;
 	});
 	
 	<% unless @food_trucks.nil? %>
