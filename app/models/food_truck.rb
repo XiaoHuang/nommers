@@ -13,6 +13,6 @@ class FoodTruck < ActiveRecord::Base
       food_truck.distance = here.distance_to Geokit::LatLng.new(food_truck.latitude, food_truck.longitude)
       food_truck.distance > distance_threshold
     end
-    food_trucks
+    food_trucks.sort! {|x, y| x.distance.to_f <=> y.distance.to_f }
   end
 end
