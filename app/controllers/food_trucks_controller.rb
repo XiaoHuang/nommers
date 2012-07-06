@@ -4,6 +4,7 @@ class FoodTrucksController < ApplicationController
   def map
     @food_trucks = FoodTruck.order(:name)
   end
+
   def index
     unless params[:location].nil?
       Geokit::Geocoders::google = "AIzaSyDjpc3N49wLGD0LtRTkwIjxrRBDx1hAaco"

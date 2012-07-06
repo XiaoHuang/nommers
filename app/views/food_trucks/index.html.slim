@@ -1,0 +1,14 @@
+= form_tag food_trucks_path, method: 'get' do
+  = label_tag :location
+  = text_field_tag :location 
+  = submit_tag 'Search' 
+
+- if @food_trucks
+  ol.food-trucks
+    - @food_trucks.each do |food_truck|
+      li
+        = food_truck.name
+        br
+        | (
+        span.distance = number_with_precision food_truck.distance, precision: 2
+        |  miles away)
