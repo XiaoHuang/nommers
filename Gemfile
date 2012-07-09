@@ -16,6 +16,8 @@ group :development, :test do
   gem 'capybara-webkit'
   gem 'debugger'
   gem 'factory_girl_rails'
+  gem 'jasmine'
+  gem 'jasmine-headless-webkit'
   gem 'rspec-rails'
 end
 
