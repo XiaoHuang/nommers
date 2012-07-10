@@ -12,3 +12,15 @@
         | (
         span.distance = number_with_precision food_truck.distance, precision: 2
         |  miles away)
+
+#map_canvas
+
+script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjpc3N49wLGD0LtRTkwIjxrRBDx1hAaco&sensor=false"
+coffee:
+  $ ->
+    mycoords = new google.maps.LatLng 34.0636014, -118.3682263
+    mapOptions =
+      zoom: 12
+      center: mycoords
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    map = new google.maps.Map document.getElementById('map_canvas'), mapOptions
