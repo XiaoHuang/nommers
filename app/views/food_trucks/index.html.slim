@@ -5,9 +5,9 @@
     = submit_tag 'search' 
 
   - if @food_trucks
-    ol.food-trucks
+    ol#food-trucks
       - @food_trucks.each do |food_truck|
-        li
+        li data-lng="#{food_truck.longitude}" data-lat="#{food_truck.latitude}" title="#{food_truck.name}"
           = food_truck.name
           br
           | (
@@ -20,8 +20,8 @@
 script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxQkZ5bIQf0KZFxQO85S9QSe870F66pB8&sensor=false"
 
 javascript:
-  var lat = #{@my_lat};
-  var long = #{@my_long};
+  var user_lat = #{@my_lat};
+  var user_long = #{@my_long};
   var food_truck_markers = #{{@food_trucks.to_json}};
 
 coffee:
@@ -29,8 +29,8 @@ coffee:
     infowindow = new google.maps.InfoWindow
 
     # print the map
-    if lat && long
-      mycoords = new google.maps.LatLng long, lat
+    if user_lat && user_long
+      mycoords = new google.maps.LatLng user_long, user_lat
     else
       mycoords = new google.maps.LatLng 34.0636014, -118.3682263
     mapOptions =
@@ -59,4 +59,27 @@ coffee:
           infowindow.open(map, truck_marker) 
         google.maps.event.addListener truck_marker, 'click', onclick
 
+    # recenter when user click the order list
+    stripslashes = (str) ->
+      str = str.replace(/\\'/g, "'")
+      str = str.replace(/\\"/g, "\"")
+      str
+    recentermap = (lng, lat, name) ->
+      point = new google.maps.LatLng(lat, lng)
+      map.setZoom 13
+      map.panTo point
+      infowindow.setPosition point
+      name = stripslashes(name)
+      infowindow.setContent unescape(name)
+      infowindow.setOptions pixelOffset: new google.maps.Size(0, -34)
+      infowindow.open(map)
+
+    $("#food-trucks").mouseleave ->
+      map.setZoom 12
+      map.setCenter mycoords
+      infowindow.close()
+
+    $("#food-trucks li").mouseenter ->
+      l = $(this)
+      recentermap l.attr("data-lng"), l.attr("data-lat"), l.attr("title")
 
